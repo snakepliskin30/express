@@ -1,0 +1,17 @@
+### User Authentication
+post {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "user": "Iya",
+    "pwd": "dahoy"
+}
+
+### User Login
+post {{baseUrl}}/auth
+Content-Type: application/json
+
+{
+    "user": "Iya",
+    "pwd": "dahoy"
+}
