@@ -1,0 +1,32 @@
+get {{baseUrl}}/employees
+
+###
+
+post {{baseUrl}}/employees
+Content-Type: application/json
+
+{
+    "firstName": "Rod",
+    "lastName": "Tolaresa"
+}
+
+###
+
+put {{baseUrl}}/employees
+Content-Type: application/json
+
+{
+    "firstName": "Hayree"
+}
+
+###
+
+delete {{baseUrl}}/employees
+Content-Type: application/json
+
+{
+    "id": 2
+}
+
+###
+get {{baseUrl}}/employees/6

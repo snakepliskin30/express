@@ -1,0 +1,13 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "apiKey": "my-api-key"
+    },
+    "dev": {
+      "baseUrl": "http://localhost:3500"
+    },
+    "test": {
+      "baseUri": "http://localhost: 3090"
+    }
+  }
+}
