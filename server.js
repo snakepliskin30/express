@@ -4,6 +4,7 @@ import path from 'path';
 import cors from 'cors';
 import logger from './middleware/logEvents.js';
 import errorHandler from './middleware/errorHandler.js';
+import corsOptions from './.vscode/corsOptions.js';
 
 // Routes
 import subdirRoute from './routes/subdir.js';
@@ -22,17 +23,6 @@ const app = express();
 app.use(logger);
 
 // cors = cross origin resource sharing
-const whitelist = ['http://127.0.0.1/5500', 'http://127.0.0.1/3000'];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  optionSuccessStatus: 200,
-};
 app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded data
@@ -52,7 +42,7 @@ app.use('/', rootRoute);
 app.use('/subdir', subdirRoute);
 app.use('/employees', employeeApiRoute);
 
-app.all('/*', (req, res) => {
+app.all('*', (req, res) => {
   res.status(404);
   if (req.accepts('html')) {
     res.sendFile(path.join(__dirname, 'views', '404.html'));
@@ -61,11 +51,6 @@ app.all('/*', (req, res) => {
   } else {
     res.type('txt').send('404 Not Found');
   }
-});
-
-// custom 404 does not set header to 404 automatically
-app.get('/*', (req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 app.use(errorHandler);
