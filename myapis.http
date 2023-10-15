@@ -1,7 +1,7 @@
+### Get All Employees
 get {{baseUrl}}/employees
 
-###
-
+### Add Employee
 post {{baseUrl}}/employees
 Content-Type: application/json
 
@@ -10,23 +10,22 @@ Content-Type: application/json
     "lastName": "Tolaresa"
 }
 
-###
-
+### Update Employee
 put {{baseUrl}}/employees
 Content-Type: application/json
 
 {
+    "id": 3,
     "firstName": "Hayree"
 }
 
-###
-
+### Delete Employee
 delete {{baseUrl}}/employees
 Content-Type: application/json
 
 {
-    "id": 2
+    "id": 5
 }
 
-###
-get {{baseUrl}}/employees/6
+### Get Employee By Id
+get {{baseUrl}}/employees/2
