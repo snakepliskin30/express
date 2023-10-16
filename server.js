@@ -2,7 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import cors from 'cors';
-import corsOptions from './.vscode/corsOptions.js';
+import corsOptions from './config/corsOptions.js';
 import cookieParser from 'cookie-parser';
 
 // Routes
@@ -18,6 +18,7 @@ import logoutRouter from './routes/api/logout.js';
 import logger from './middleware/logEvents.js';
 import errorHandler from './middleware/errorHandler.js';
 import verifyJWT from './middleware/verifyJWT.js';
+import credentials from './middleware/credentials.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +30,10 @@ const app = express();
 
 // custom middleware logger
 app.use(logger);
+
+// Handle options credentials check - before CORS
+// and fetch cookies credentials requirement
+app.use(credentials);
 
 // cors = cross origin resource sharing
 app.use(cors(corsOptions));

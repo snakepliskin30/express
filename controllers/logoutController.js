@@ -27,7 +27,7 @@ export const handleLogout = async (req, res) => {
   console.log('token', token);
   const userFound = usersDB.users.find((person) => person.refreshToken === token);
   if (!userFound) {
-    res.clearCookie('jwt', { httpOnly: true });
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.sendStatus(204);
   }
 
@@ -39,6 +39,6 @@ export const handleLogout = async (req, res) => {
   console.log('usersDB.users', usersDB.users);
   await fsPromises.writeFile(path.join(__dirname, '..', 'model', 'users.json'), JSON.stringify(usersDB.users));
 
-  res.clearCookie('jwt', { httpOnly: true });
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
   res.sendStatus(204);
 };
