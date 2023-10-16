@@ -1,4 +1,4 @@
-### User Authentication
+### User Creation
 post {{baseUrl}}/register
 Content-Type: application/json
 
@@ -15,3 +15,9 @@ Content-Type: application/json
     "user": "Iya",
     "pwd": "dahoy"
 }
+
+### Refresh Access Token
+get {{baseUrl}}/refresh
+
+### Logout user
+get {{baseUrl}}/logout
