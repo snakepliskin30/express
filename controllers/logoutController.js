@@ -21,6 +21,7 @@ const usersDB = {
 
 export const handleLogout = async (req, res) => {
   const cookies = req.cookies;
+  console.log(cookies);
   if (!cookies?.jwt) res.sendStatus(204);
 
   const token = cookies.jwt;
