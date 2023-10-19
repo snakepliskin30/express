@@ -3,8 +3,8 @@ post {{baseUrl}}/register
 Content-Type: application/json
 
 {
-    "user": "Iya",
-    "pwd": "dahoy"
+    "user": "Hayree",
+    "pwd": "december22"
 }
 
 ### User Login
@@ -12,8 +12,8 @@ post {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-    "user": "Iya",
-    "pwd": "dahoy"
+    "user": "Rod",
+    "pwd": "password"
 }
 
 ### Refresh Access Token

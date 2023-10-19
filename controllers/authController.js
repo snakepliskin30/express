@@ -29,8 +29,9 @@ export const handleLogin = async (req, res) => {
   // macth password
   const match = await bcrypt.compare(pwd, userFound.password);
   if (match) {
+    const roles = Object.values(userFound.roles);
     // create JWT
-    const accessToken = jwt.sign({ username: userFound.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
+    const accessToken = jwt.sign({ UserInfo: { username: userFound.username, roles: roles } }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
     const refreshToken = jwt.sign({ username: userFound.username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
     const filterUsers = usersDB.users.filter((person) => person.username !== userFound.username);
@@ -38,7 +39,9 @@ export const handleLogin = async (req, res) => {
     const updatedUsers = [...filterUsers, loggedInUser];
     usersDB.setUsers(updatedUsers);
     await fsPromises.writeFile(path.join(__dirname, '..', 'model', 'users.json'), JSON.stringify(usersDB.users));
-    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+    // Dave says the code below will fix browser error but this causes error when logging out via REST Client extension
+    // res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
     res.json({ accessToken });
   } else {
     res.sendStatus(401);
