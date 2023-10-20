@@ -1,9 +1,12 @@
+import { config } from 'dotenv';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import cors from 'cors';
 import corsOptions from './config/corsOptions.js';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
+import connectDB from './config/dbConn.js';
 
 // Routes
 import subdirRoute from './routes/subdir.js';
@@ -20,10 +23,13 @@ import errorHandler from './middleware/errorHandler.js';
 import verifyJWT from './middleware/verifyJWT.js';
 import credentials from './middleware/credentials.js';
 
+config();
+
+// Connect to DB
+connectDB();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-console.log(__dirname);
 
 const PORT = process.env.PORT || 3500;
 const app = express();
@@ -77,4 +83,7 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+mongoose.connection.once('open', () => {
+  console.log('Connected to DB');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+});

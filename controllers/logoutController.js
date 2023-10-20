@@ -1,12 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { config } from 'dotenv';
 import fsPromises from 'fs/promises';
 import { createRequire } from 'module';
-
-config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

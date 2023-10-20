@@ -1,8 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { config } from 'dotenv';
 import { createRequire } from 'module';
-
-config();
 
 const require = createRequire(import.meta.url);
 const usersDB = {
