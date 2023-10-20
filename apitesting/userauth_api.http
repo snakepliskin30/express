@@ -12,8 +12,8 @@ post {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-    "user": "Rod",
-    "pwd": "password"
+    "user": "Iya",
+    "pwd": "dahoy"
 }
 
 ### Refresh Access Token
