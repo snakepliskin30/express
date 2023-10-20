@@ -1,59 +1,51 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const employees = require('../model/employees.json');
-const data = {
-  employees,
-  setEmployees: function (data) {
-    this.employees = data;
-  },
+import Employee from '../model/Employee.js';
+
+export const getAllEmployees = async (req, res) => {
+  const employees = await Employee.find();
+  if (!employees) res.status(204).json({ message: 'No employees found.' });
+  res.json(employees);
 };
 
-export const getAllEmployees = (req, res) => {
-  res.json(data.employees);
-};
-
-export const addEmployee = (req, res) => {
-  const newEmployee = {
-    id: data.employees[data.employees.length - 1].id + 1 || 1,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-  };
-
-  if (!req.body.firstName || !req.body.lastName) {
+export const addEmployee = async (req, res) => {
+  if (!req.body.firstname || !req.body.lastname) {
     res.status(400).json({ message: 'First and last names are required.' });
   }
 
-  data.setEmployees([...data.employees, newEmployee]);
-  res.status(201).json(data.employees);
+  const newEmployee = await Employee.create({
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+  });
+
+  if (newEmployee) {
+    res.status(201).json({ message: `Employee ${req.body.firstname} ${req.body.lastname} was created.` });
+  } else res.status(400).json({ message: `Something went wrong creating the new employees.` });
 };
 
-export const updateEmployee = (req, res) => {
-  const employee = data.employees.find((emp) => emp.id === parseInt(req.body.id));
+export const updateEmployee = async (req, res) => {
+  const employee = await Employee.findById(req.body.id);
   if (!employee) {
     res.status(400).json({ message: `Employee ID ${req.body.id} not found` });
   }
-  if (req.body.firstName) employee.firstName = req.body.firstName;
-  if (req.body.lastName) employee.lastName = req.body.lastName;
-  const filterEmployees = data.employees.filter((emp) => emp.id !== parseInt(req.body.id));
-  const unsortedEmployees = [...filterEmployees, employee];
-  const sortedEmployees = unsortedEmployees.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
-  data.setEmployees([...sortedEmployees]);
-  res.json(data.employees);
+  console.log(employee);
+  if (req.body.firstname) employee.firstname = req.body.firstname;
+  if (req.body.lastname) employee.lastname = req.body.lastname;
+  if (result) res.json({ message: `Employee with id ${req.body.id} was updated.` });
+  else res.status(400).json({ message: `Something went wrong updating employee with id ${req.body.id}.` });
 };
 
-export const deleteEmployee = (req, res) => {
-  const employee = data.employees.find((emp) => emp.id === parseInt(req.body.id));
+export const deleteEmployee = async (req, res) => {
+  const employee = await Employee.findById(req.body.id);
   if (!employee) {
     res.status(400).json({ message: `Employee ID ${req.body.id} not found` });
   }
-  const filterEmployees = data.employees.filter((emp) => emp.id !== parseInt(req.body.id));
-  const sortedEmployees = filterEmployees.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
-  data.setEmployees([...sortedEmployees]);
-  res.json(data.employees);
+
+  const result = await Employee.findByIdAndDelete(req.body.id);
+  if (result) res.json({ message: `Employee with id ${req.body.id} was deleted.` });
+  else res.status(400).json({ message: `Something went wrong deleting employee with id ${req.body.id}.` });
 };
 
-export const getEmployeeById = (req, res) => {
-  const employee = data.employees.find((emp) => emp.id === parseInt(req.params.id));
+export const getEmployeeById = async (req, res) => {
+  const employee = await Employee.findById(req.body.id);
   if (!employee) {
     res.status(400).json({ message: `Employee ID ${req.params.id} not found` });
   }
